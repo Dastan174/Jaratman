@@ -1,5 +1,14 @@
 from sqlalchemy import Table, Column, Integer, String
 from sqlalchemy import MetaData
+from sqlalchemy.orm import Mapped, mapped_column
+from .database import Base
+
+
+
+class Auth(Base):
+    __tablename__ = "auth"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str]
 
 
 metadata = MetaData()
