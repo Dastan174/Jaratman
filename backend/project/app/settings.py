@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from .auth.post import router as router_post_user
+from project.app.auth.post import router as router_post_user
+
 
 app = FastAPI(
     title='Jaratman'
@@ -8,3 +9,4 @@ app = FastAPI(
 app.include_router(router_post_user)
 
 
+TOKEN_TIME = 6000
