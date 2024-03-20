@@ -14,6 +14,3 @@ class redis_token:
 
     def __getitem__(self, key: Any) -> Any:
         return code.get(key)
-
-reds = redis_token()
-reds["sss"] = "sss1"

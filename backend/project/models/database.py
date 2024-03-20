@@ -1,11 +1,13 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-from .models import metadata
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
 
-#Базы данных
-DATABASE_URL = ("sqlite:///project/database.db")
-engine = create_engine(
-    DATABASE_URL, echo=True, connect_args={"check_same_thread": False}
+
+# База данных
+DATABASE_URL = "sqlite+aiosqlite:///project/database.db"
+engine = create_async_engine(
+    DATABASE_URL, echo=True
 )
 
-session_local = sessionmaker(bind=engine)
+# Создаем асинхронный sessionmaker
+async_session = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
+
