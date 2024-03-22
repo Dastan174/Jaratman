@@ -1,38 +1,37 @@
-from project.models.database import async_session
 import stripe
 from fastapi import APIRouter, HTTPException
-
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/stripe")
-session = async_session()
-
 
 stripe.api_key = "sk_test_51OwgQPIxm5X1vTxb9GfwWuxe36nHGUoerWthJnI6NmbHB5ZqjxIGO80VZw6tXVJncsCKcGC9pqnre1OFnCW4kLGt00HJFDpcgS"
 stripe_public_key = "pk_test_51OwgQPIxm5X1vTxbE1Zf6NDFEFmH9LgoSWy4ORnPQ5hkQHBxgETJnjHRXnGiKzRXld7vCOOai7mMW5Eupxl6Imh000mOHkjqDO"
 
-from pydantic import BaseModel
+
+# @router.post("/create-payment-intent/")
+# async def create_payment_intent(amount):
+#     print("Type of 'amount' parameter:", type(amount))  # Добавляем проверку типа данных
+#     try:
+#         intent = stripe.PaymentIntent.create(
+#             amount=amount,
+#             currency="usd"
+#         )
+#         return {"client_secret": intent.client_secret}
+#     except stripe.error.StripeError as e:
+#         raise HTTPException(status_code=400, detail=str(e))
 
 
-router = APIRouter(prefix="/stripe")
+from fastapi import Request
 
-
-class PaymentData(BaseModel):
-    amount: int
-
-
-
-
-# Маршрут для создания платежного интента
-@router.post("/create-payment-intent")
-async def create_payment_intent(payment_data: PaymentData):
+@router.post("/create-payment-intent/")
+async def create_payment_intent(request: Request):
+    data = await request.json()
+    amount = data.get('amount')
     try:
-        # Создание платежного интента с использованием данных от клиента
         intent = stripe.PaymentIntent.create(
-            amount=payment_data.amount,
+            amount=amount,
             currency="usd"
         )
-        # Отправка клиенту client_secret для завершения платежа
         return {"client_secret": intent.client_secret}
     except stripe.error.StripeError as e:
-        # Если произошла ошибка Stripe, вернуть сообщение об ошибке
         raise HTTPException(status_code=400, detail=str(e))

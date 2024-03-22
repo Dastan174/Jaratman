@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { createPaymentIntent } from './Api'; // Путь к вашему файлу с функцией createPaymentIntent
+import { createPaymentIntent } from './Api';
 
 const PaymentForm = () => {
   const [amount, setAmount] = useState('');
@@ -11,24 +11,22 @@ const PaymentForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { client_secret } = await createPaymentIntent(amount);
+      const response = await createPaymentIntent(amount); 
+      const { client_secret } = response;
+
       const result = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
-          card: elements.getElement(CardElement),
-          billing_details: {
-            // Дополнительные детали платежа, например, имя плательщика
-          },
-        },
+          card: elements.getElement(CardElement), 
+        }
       });
 
       if (result.error) {
-        throw new Error(result.error.message);
+        setPaymentMessage('Произошла ошибка при оплате: ' + result.error.message);
+      } else {
+        setPaymentMessage('Платеж успешно выполнен!');
       }
-
-      // Платеж успешно завершен
-      setPaymentMessage('Платеж успешно завершен');
     } catch (error) {
-        setPaymentMessage('Произошла ошибка при создании или обработке платежа');
+      setPaymentMessage('Произошла ошибка при создании платежа');
     }
   };
 
@@ -38,13 +36,13 @@ const PaymentForm = () => {
         <label>
           Сумма (в центах):
           <input
-            type="number"
+            type="string"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
         </label>
         <CardElement />
-        <button type="submit">Оплатить</button>
+        <button type="submit" disabled={!stripe}>Оплатить</button>
       </form>
       {paymentMessage && <p>{paymentMessage}</p>}
     </div>
