@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from ..schemas.category import Category
-from project.models.models import authentication, category
+from project.models.models import authentication, category, product
 from project.models.database import async_session
 from project.auxiliary import redis_token_save
 from fastapi.responses import JSONResponse
@@ -72,12 +72,30 @@ async def category_get_all():
 async def category_get(urls: str):
     async with async_session() as session:
         categories = await session.execute(category.select().where(category.c.urls == urls))
-        categories = categories.fetchall()
+        categories = categories.fetchone()
         if not categories:
             return JSONResponse(status_code=404, content={"msg": "Категории не найдены"})
 
-        # Преобразование результата в список словарей для удобства
-        categories_data = [{"id": category.id, "name": category.name, "urls": category.urls} for category in
-                           categories]
+        product_info = await session.execute(product.select().where(product.c.category_id == categories.id))
+        product_list = product_info.fetchall()
 
-        return JSONResponse(status_code=200, content={"categories": categories_data})
+        # Преобразование результата в список словарей для удобства
+        product_data = []
+        for product_row in product_list:
+            # Получаем информацию о категории по ее идентификатору
+
+            # Создаем словарь с нужными данными
+            product_dict = {
+                "id": product_row.id,
+                "name": product_row.name,
+                "urls": product_row.urls,
+                "description": product_row.description,
+                "quantity": product_row.quantity,
+                "category": categories.name,
+            }
+            if product_row.image:
+                product_dict["image"] = product_row.image.decode('utf-8')
+
+            product_data.append(product_dict)
+
+        return JSONResponse(status_code=200, content={"products": product_data})

@@ -1,24 +1,36 @@
-import React from 'react';
-import './App.css';
+import React, { useState } from 'react';
+import { createPaymentIntent } from './index';
 
-function App() {
+const PaymentForm: React.FC = () => {
+  const [amount, setAmount] = useState<number>(0);
+  const [paymentMessage, setPaymentMessage] = useState<string>('');
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const { client_secret } = await createPaymentIntent(amount);
+      // Ваша логика для обработки client_secret, например, открыть модальное окно с формой оплаты
+    } catch (error) {
+      setPaymentMessage('Произошла ошибка при создании платежа');
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Сумма (в центах):
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(Number(e.target.value))}
+          />
+        </label>
+        <button type="submit">Оплатить</button>
+      </form>
+      {paymentMessage && <p>{paymentMessage}</p>}
     </div>
   );
-}
+};
 
-export default App;
+export default PaymentForm;

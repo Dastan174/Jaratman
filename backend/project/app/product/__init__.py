@@ -70,56 +70,6 @@ async def product_add(Product: Product, token: str = Cookie(None)):
 
         return JSONResponse(status_code=200, content={"msg": "Продукт успешно добавлен"})
 
-# @router.post("/add/")
-# async def product_add(Product: Product, image: UploadFile = File(...), token: str = Cookie(None)):
-#     async with async_session() as session:
-#         if token is None:
-#             return JSONResponse(status_code=401, content={"msg": "Требуется вход"})
-#
-#         if not token == redis_token_save[token]:
-#             return JSONResponse(status_code=401, content={"msg": "Пользователь не залогинен"})
-#
-#         # Проверяем существует ли продукт с таким же именем
-#         existing_product = await session.execute(product.select().where(product.c.name == Product.name))
-#         existing_product = existing_product.fetchone()
-#
-#         if existing_product:
-#             return JSONResponse(status_code=400, content={"msg": "Такой продукт уже существует"})
-#
-#         # Получаем идентификатор категории по имени
-#
-#         category_query = await session.execute(category.select().where(category.c.name == Product.category))
-#         category_row = category_query.fetchone()
-#
-#         if not category_row:
-#             return JSONResponse(status_code=404, content={"msg": "Категория не найдена"})
-#
-#         category_id = category_row.id
-#
-#         image_data = save_image_to_base64(image)
-#
-#         # Добавляем новый продукт
-#         urls = translit(Product.name, 'ru', reversed=True).replace(" ", "-")
-#         new_product = product.insert().values(
-#             name=Product.name,
-#             urls=urls,
-#             price=Product.price,
-#             description=Product.description,
-#             image=image_data,
-#             quantity=Product.quantity,
-#             category_id=category_id
-#         )
-#
-#         try:
-#             await session.execute(new_product)
-#             await session.commit()
-#         except IntegrityError:
-#             await session.rollback()
-#             return JSONResponse(status_code=400, content={"msg": "Ошибка при добавлении продукта"})
-#
-#         return JSONResponse(status_code=200, content={"msg": "Продукт успешно добавлен"})
-
-
 @router.delete("/delete/{urls}/")
 async def product_delete(urls: str, token: str = Cookie(None)):
     async with async_session() as session:
