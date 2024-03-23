@@ -7,6 +7,9 @@ class Product(BaseModel):
     category: str
     quantity: int
     image: bytes
+    availability: str
+    discount: int
+
 
 
 

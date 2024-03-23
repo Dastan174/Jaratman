@@ -27,8 +27,18 @@ product = Table(
     Column("name", String, unique=True, nullable=False),
     Column("urls", String, nullable=False),
     Column("price", Float, nullable=False),
+    Column("discount", Integer, nullable=False),
     Column("description", String, nullable=False),
     Column("image", BLOB),
     Column("quantity", Integer, default=1),
+    Column("availability_id", Integer, ForeignKey('availability.id')),
     Column("category_id", Integer, ForeignKey('category.id', ondelete="CASCADE"))
+)
+
+
+availability = Table(
+    "availability",
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column("name", String, unique=True, nullable=False),
 )

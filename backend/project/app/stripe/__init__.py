@@ -8,19 +8,6 @@ stripe.api_key = "sk_test_51OwgQPIxm5X1vTxb9GfwWuxe36nHGUoerWthJnI6NmbHB5ZqjxIGO
 stripe_public_key = "pk_test_51OwgQPIxm5X1vTxbE1Zf6NDFEFmH9LgoSWy4ORnPQ5hkQHBxgETJnjHRXnGiKzRXld7vCOOai7mMW5Eupxl6Imh000mOHkjqDO"
 
 
-# @router.post("/create-payment-intent/")
-# async def create_payment_intent(amount):
-#     print("Type of 'amount' parameter:", type(amount))  # Добавляем проверку типа данных
-#     try:
-#         intent = stripe.PaymentIntent.create(
-#             amount=amount,
-#             currency="usd"
-#         )
-#         return {"client_secret": intent.client_secret}
-#     except stripe.error.StripeError as e:
-#         raise HTTPException(status_code=400, detail=str(e))
-
-
 from fastapi import Request
 
 @router.post("/create-payment-intent/")
