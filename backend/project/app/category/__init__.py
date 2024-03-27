@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from ..schemas.category import Category
-from project.models.models import authentication, category, product
+from project.models.models import authentication, category, product, availability
 from project.models.database import async_session
 from project.auxiliary import redis_token_save
 from fastapi.responses import JSONResponse
 from fastapi import Cookie
 from transliterate import translit
+import base64
 
 router = APIRouter(prefix="/category")
 session = async_session()
@@ -79,18 +80,28 @@ async def category_get(urls: str):
         product_info = await session.execute(product.select().where(product.c.category_id == categories.id))
         product_list = product_info.fetchall()
 
+
+
         # Преобразование результата в список словарей для удобства
         product_data = []
         for product_row in product_list:
+            availability_id = await session.execute(
+                availability.select().where(availability.c.id == product.availability_id))
+            availability_data = availability_id.fetchone()
             # Получаем информацию о категории по ее идентификатору
+            discounted_price = product_row.price - ((product_row.discount / 100) * product_row.price)
 
             # Создаем словарь с нужными данными
             product_dict = {
                 "id": product_row.id,
                 "name": product_row.name,
+                "price": product_row.price,
+                "discounted_price": discounted_price,
+                "discount": product_row.discount,
                 "urls": product_row.urls,
                 "description": product_row.description,
                 "quantity": product_row.quantity,
+                "availability": availability_data.name,
                 "category": categories.name,
             }
             if product_row.image:
@@ -99,3 +110,5 @@ async def category_get(urls: str):
             product_data.append(product_dict)
 
         return JSONResponse(status_code=200, content={"products": product_data})
+
+

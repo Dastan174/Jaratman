@@ -1,22 +1,15 @@
-version: '3.12.1'
-
-
+version: '3'
 services:
-  redis:
-    image: redis
-    container_name: redis_container
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis.conf:/redis.conf
-    command: ["redis-server", "/redis.conf"]
-
-  api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: api_container
+  fastapi:
+    build: ./backend
     ports:
       - "8000:8000"
     depends_on:
-      - redis
+      - re
+
+  re:
+    image: redis
+    container_name: re
+    command: redis-server --requirepass redistest
+    ports:
+      - "6379:6379"

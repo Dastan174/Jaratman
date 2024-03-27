@@ -2,7 +2,7 @@
 FROM python:3.12.1
 
 # Устанавливаем рабочую директорию в /app
-WORKDIR /backend
+WORKDIR /app
 
 # Копируем зависимости в файл requirements.txt внутрь контейнера
 COPY requirements.txt .
@@ -12,6 +12,4 @@ RUN pip install -r requirements.txt
 
 # Копируем содержимое текущей директории внутрь контейнера в /app
 COPY . .
-
-# Определяем команду для запуска приложения
-CMD ["uvicorn", "project.app.settings:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "alembic revision --autogenerate && alembic upgrade head && uvicorn project.app.settings:app --host 0.0.0.0 --port 8000"]

@@ -120,7 +120,9 @@ async def product_get_all():
                 availability.select().where(availability.c.id == products.availability_id))
             availability_data = availability_id.fetchone()
 
-            discounted_price = (products.discount / 100) * products.price
+            discounted_price = products.price - ((products.discount / 100) * products.price)
+
+            image_base = products.image.decode('utf-8')
 
             # Создаем словарь с нужными данными
             product_dict = {
@@ -131,7 +133,7 @@ async def product_get_all():
                 "discounted_price": discounted_price,
                 "discount": products.discount,
                 "description": products.description,
-                "image": products.image,
+                "image": image_base,
                 "quantity": products.quantity,
                 "availability": availability_data.name,
                 "category": category_data.name,
@@ -156,7 +158,9 @@ async def product_get(urls: str):
             availability.select().where(availability.c.id == products.availability_id))
         availability_data = availability_id.fetchone()
 
-        discounted_price = (products.discount / 100) * products.price
+        discounted_price = products.price - ((products.discount / 100) * products.price)
+
+        image_base = products.image.decode('utf-8')
 
         product_ = {
             "id": products.id,
@@ -166,7 +170,7 @@ async def product_get(urls: str):
             "discounted_price": discounted_price,
             "discount": products.discount,
             "description": products.description,
-            "image": products.image,
+            "image": image_base,
             "quantity": products.quantity,
             "availability": availability_data.name,
             "category": category_data.name,
