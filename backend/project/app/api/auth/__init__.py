@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from ..schemas.register import RegisterUser
+from project.app.schemas.register import RegisterUser
 from project.models.models import authentication
 from project.models.database import async_session
 from project.auxiliary import redis_token_save, generate_hash, create_token
@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter(prefix="/auth")
 session = async_session()
+
 
 
 @router.post("/register/")

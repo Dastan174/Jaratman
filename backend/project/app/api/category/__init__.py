@@ -1,12 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from ..schemas.category import Category
+from project.app.schemas.category import Category
 from project.models.models import authentication, category, product, availability
 from project.models.database import async_session
-from project.auxiliary import redis_token_save
 from fastapi.responses import JSONResponse
 from fastapi import Cookie
 from transliterate import translit
-import base64
+from project.validates.validate_token import validate_token
 
 router = APIRouter(prefix="/category")
 session = async_session()
@@ -15,11 +14,7 @@ session = async_session()
 @router.post("/add/")
 async def category_add(Cat: Category, token: str = Cookie(None)):
     async with async_session() as session:
-        if token is None:
-            return JSONResponse(status_code=401, content={"msg": "Требуется вход"})
-
-        if not token == redis_token_save[token]:
-            return JSONResponse(status_code=401, content={"msg": "Пользователь не залогинен"})
+        validate_token(token)
 
         cat_es = await session.execute(category.select().where(category.c.name == Cat.name))
         existing_category = cat_es.fetchone()  # Получение одной строки
@@ -38,11 +33,7 @@ async def category_add(Cat: Category, token: str = Cookie(None)):
 @router.delete("/delete/{urls}/")
 async def category_delete(urls: str, token: str = Cookie(None)):
     async with async_session() as session:
-        if token is None:
-            raise HTTPException(status_code=401, detail="Требуется вход")
-
-        if not token == redis_token_save[token]:
-            raise HTTPException(status_code=401, detail="Пользователь не залогинен")
+        validate_token(token)
 
         category_query = category.delete().where(category.c.urls == urls)
         result = await session.execute(category_query)
@@ -86,17 +77,17 @@ async def category_get(urls: str):
         product_data = []
         for product_row in product_list:
             availability_id = await session.execute(
-                availability.select().where(availability.c.id == product.availability_id))
+                availability.select().where(availability.c.id == product_row.availability_id))
             availability_data = availability_id.fetchone()
             # Получаем информацию о категории по ее идентификатору
-            discounted_price = product_row.price - ((product_row.discount / 100) * product_row.price)
+
 
             # Создаем словарь с нужными данными
             product_dict = {
                 "id": product_row.id,
                 "name": product_row.name,
                 "price": product_row.price,
-                "discounted_price": discounted_price,
+                "discounted_price": product_row.price - ((product_row.discount / 100) * product_row.price),
                 "discount": product_row.discount,
                 "urls": product_row.urls,
                 "description": product_row.description,

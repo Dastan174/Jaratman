@@ -1,0 +1,15 @@
+version: '3'
+services:
+  fastapi:
+    image: kairatgood/kairat-jaratam:tagname
+    ports:
+      - "8000:8000"
+    depends_on:
+      - re
+
+  re:
+    image: redis
+    container_name: re
+    command: redis-server --requirepass redistest
+    ports:
+      - "6379:6379"
