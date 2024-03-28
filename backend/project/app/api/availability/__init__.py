@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from ..schemas. availability import Availability
+from project.app.schemas.availability import Availability
 from project.models.models import availability
 from project.models.database import async_session
 from project.auxiliary import redis_token_save
 from fastapi.responses import JSONResponse
 from fastapi import Cookie
-
+from project.validates.validate_token import validate_token
 
 router = APIRouter(prefix="/availability")
 session = async_session()
@@ -14,11 +14,7 @@ session = async_session()
 @router.post("/add/")
 async def availability_add(ava: Availability, token: str = Cookie(None)):
     async with async_session() as session:
-        if token is None:
-            return JSONResponse(status_code=401, content={"msg": "Требуется вход"})
-
-        if not token == redis_token_save[token]:
-            return JSONResponse(status_code=401, content={"msg": "Пользователь не залогинен"})
+        validate_token(token)
 
         ava_es = await session.execute(availability.select().where(availability.c.name == ava.name))
         existing_availability = ava_es.fetchone()
@@ -34,11 +30,7 @@ async def availability_add(ava: Availability, token: str = Cookie(None)):
 @router.delete("/delete/")
 async def availability_delete(ava: Availability, token: str = Cookie(None)):
     async with async_session() as session:
-        if token is None:
-            return JSONResponse(status_code=401, content={"msg": "Требуется вход"})
-
-        if not token == redis_token_save[token]:
-            return JSONResponse(status_code=401, content={"msg": "Пользователь не залогинен"})
+        validate_token(token)
 
         availability_query = availability.delete().where(availability.c.name == ava.name)
         result = await session.execute(availability_query)

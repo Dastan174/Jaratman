@@ -1,10 +1,8 @@
 from fastapi import FastAPI
-from project.app.auth.post import router as router_post_user
-from project.app.category import router as router_category
-from project.app.product import router as router_product
-from project.app.stripe import router as router_stripe
-from project.app.availability import router as router_availability
+
+
 from fastapi.middleware.cors import CORSMiddleware
+import logging
 
 app = FastAPI(
     title='Jaratman'
@@ -17,11 +15,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router_post_user, tags=["users"])
-app.include_router(router_category, tags=["category"])
-app.include_router(router_product, tags=["product"])
-app.include_router(router_stripe, tags=["stripe"])
-app.include_router(router_availability, tags=["router_availability"])
-
+logger = logging.getLogger(__name__)
 
 TOKEN_TIME = 90000
