@@ -1,5 +1,6 @@
-from sqlalchemy import Table, Column, Integer, String, ForeignKey, Float, BLOB
+from sqlalchemy import Table, Column, Integer, String, ForeignKey, Float, BLOB, DateTime
 from sqlalchemy import MetaData
+from datetime import datetime
 
 metadata = MetaData()
 
@@ -35,10 +36,18 @@ product = Table(
     Column("category_id", Integer, ForeignKey('category.id', ondelete="CASCADE"))
 )
 
-
 availability = Table(
     "availability",
     metadata,
     Column('id', Integer, primary_key=True),
     Column("name", String, unique=True, nullable=False),
+)
+
+newsletter = Table(
+    "newsletter",
+    metadata,
+    Column('id', Integer, primary_key=True),
+    Column('name', String),
+    Column('email', String, unique=True),
+    Column('data', DateTime, default=datetime.now)
 )

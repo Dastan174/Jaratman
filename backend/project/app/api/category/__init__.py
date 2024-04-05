@@ -30,6 +30,24 @@ async def category_add(Cat: Category, token: str = Cookie(None)):
         return JSONResponse(status_code=200, content={"msg": "Категория успешно создана"})
 
 
+@router.patch("/edit/{urls}")
+async def category_edit(urls: str, Cat: Category, token: str = Cookie(None)):
+    async with async_session() as session:
+        validate_token(token)
+
+        category_query = category.select().where(category.c.urls == urls)
+        existing_category = await session.execute(category_query)
+
+        existing_category = existing_category.fetchone()
+        if not existing_category:
+            return JSONResponse(status_code=400, content={"msg": "Такая категория не существует"})
+
+        new_urls = translit(Cat.name, 'ru', reversed=True).replace(" ", "-")
+        await session.execute(category.update().where(category.c.urls == urls).values(name=Cat.name, urls=new_urls))
+        await session.commit()
+
+        return JSONResponse(status_code=200, content={"msg": "Категория успешно изменено"})
+
 @router.delete("/delete/{urls}/")
 async def category_delete(urls: str, token: str = Cookie(None)):
     async with async_session() as session:
@@ -43,7 +61,7 @@ async def category_delete(urls: str, token: str = Cookie(None)):
         if deleted_count == 0:
             raise HTTPException(status_code=404, detail="Категория не найдена")
 
-        return {"msg": "Категория успешно удалена"}
+        return JSONResponse(status_code=200, content={"msg": "Категория успешно удалена"})
 
 
 @router.get("/get/")

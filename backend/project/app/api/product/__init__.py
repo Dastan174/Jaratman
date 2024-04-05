@@ -61,6 +61,43 @@ async def product_add(Product: Product, token: str = Cookie(None)):
 
         return JSONResponse(status_code=200, content={"msg": "Продукт успешно добавлен"})
 
+@router.patch("/edit/{urls}/")
+async def product_edit(urls: str, Product: Product, token: str = Cookie(None)):
+    async with async_session() as session:
+        validate_token(token)
+
+        product_query = product.select().where(product.c.urls == urls)
+        product_ed = await session.execute(product_query)
+
+        product_eds = product_ed.fetchone()
+
+
+        if not product_eds:
+            return JSONResponse(status_code=400, content={"msg": "Такого продукта не существует"})
+
+        category_query = await session.execute(category.select().where(category.c.name == Product.category))
+        category_row = category_query.fetchone()
+
+        availability_query = await session.execute(
+            availability.select().where(availability.c.name == Product.availability))
+        availability_row = availability_query.fetchone()
+
+        new_urls = translit(Product.name, 'ru', reversed=True).replace(" ", "-")
+        ew_product = product.update().where(product.c.urls == urls).values(
+            name=Product.name,
+            urls=new_urls,
+            price=Product.price,
+            discount=Product.discount,
+            description=Product.description,
+            image=Product.image,
+            quantity=Product.quantity,
+            availability_id=availability_row.id,
+            category_id=category_row.id
+        )
+        await session.execute(ew_product)
+        await session.commit()
+        return JSONResponse(status_code=200, content={"msg": "Продукт успешно изменен"})
+
 
 @router.delete("/delete/{urls}/")
 async def product_delete(urls: str, token: str = Cookie(None)):

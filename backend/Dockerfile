@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 
 # Копируем содержимое текущей директории внутрь контейнера в /app
 COPY . .
-CMD ["sh", "-c", "alembic revision --autogenerate && alembic upgrade head && uvicorn project.app.settings:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "alembic revision --autogenerate && alembic upgrade head && uvicorn project.app.api:app --host 0.0.0.0 --port 8000"]

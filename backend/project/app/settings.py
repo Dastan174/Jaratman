@@ -18,3 +18,14 @@ app.add_middleware(
 logger = logging.getLogger(__name__)
 
 TOKEN_TIME = 90000
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 465
+SENDER_EMAIL = "kgkajrat86@gmail.com"
+SENDER_PASSWORD = "apui amtu tjyj qmcp"
+
+
+REDIS_PASSWORD="redistest"
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
