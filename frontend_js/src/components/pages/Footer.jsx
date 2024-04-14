@@ -20,18 +20,8 @@ const Footer = () => {
             <h4 style={{ marginBottom: "10px", fontSize: "20px" }}>Links</h4>
             <p onClick={aboutUs}>About us</p>
             <p onClick={() => navigate("/contact-page")}>Contact</p>
-            <Button
-              sx={{
-                color: "red",
-                border: "2px solid red",
-                width: "100px",
-                height: "32px",
-              }}
-              variant="outlined"
-              color="error"
-            >
-              Log out
-            </Button>
+            <p onClick={() => navigate("/terms")}>Terms of Service</p>
+            <p onClick={() => navigate("/shipping")}>Shipping Policy</p>
           </div>
           <div className="footer-cards">
             <img src={PaymentCards} alt="" />

@@ -6,6 +6,7 @@ const productContext = createContext();
 export const useProducts = () => useContext(productContext);
 
 const ProductContext = ({ children }) => {
+  const [product, setProduct] = useState([]);
   async function createProduct(newProduct) {
     try {
       await axios.post(`${API_URL}/product/add/`, newProduct);

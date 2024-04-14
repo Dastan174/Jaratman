@@ -11,6 +11,8 @@ import OneProductPage from "../components/product/OneProductPage";
 import AboutUs from "../components/pages/AboutUs";
 import CartPage from "../components/cart/CartPage";
 import Contact from "../components/pages/Contact";
+import TermsOfService from "../components/pages/TermsOfService";
+import ShippingPolicy from "../components/pages/ShippingPolicy";
 
 const MyRoutes = () => {
   const ADMIN_ROUTES = [
@@ -23,7 +25,9 @@ const MyRoutes = () => {
     { link: "/login", element: <AuthenticationPage />, id: 3 },
     { link: "/registration", element: <RegisterPage />, id: 4 },
     { link: "/about-us", element: <AboutUs />, id: 5 },
-    { link: "/contact-page", element: <Contact />, id: 7 },
+    { link: "/terms", element: <TermsOfService />, id: 6 },
+    { link: "/shipping", element: <ShippingPolicy />, id: 7 },
+    { link: "/contact-page", element: <Contact />, id: 8 },
   ];
   return (
     <>
