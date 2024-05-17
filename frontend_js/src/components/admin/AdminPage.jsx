@@ -1,27 +1,83 @@
 import { Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useProducts } from "../../context/ProductContext";
+import axios from "axios";
+import { API_URL } from "../../helpers/Api";
+
+{
+  /* <TextField
+  onChange={handleInp}
+  name="title"
+  sx={{ width: "100% auto" }}
+  placeholder="Title"
+  value={inpValue.title}
+/>; */
+}
+
+const CustomInput = ({ type = "text", placeholder, onHandle, value }) => {
+  return (
+    <TextField
+      type={type}
+      onChange={onHandle}
+      sx={{ width: "100% auto" }}
+      placeholder={placeholder}
+      value={value}
+    />
+  );
+};
 
 const AdminPage = () => {
-    const { createProduct } = useProducts();
+  const [data, setData] = useState([]);
+  const { createProduct } = useProducts();
   const [inpValue, setInpValue] = useState({
-    title: "",
-    description: "",
-    image: "",
+    name: "",
     price: 0,
-    quantity: 0,
+    description: "",
     category: "",
+    quantity: 0,
+    image: "",
     availability: "",
     discount: 0,
   });
+  const inputChangeHandler = (name) => {
+    return (event) => {
+      const { value } = event.target;
+      setInpValue((prevState) => ({ ...prevState, [name]: value }));
+    };
+  };
+  async function addProduct() {
+    try {
+      await createProduct(inpValue);
+      // Опционально: очищаем поля ввода после успешного добавления продукта
+      setInpValue({
+        name: "",
+        description: "",
+        image: "",
+        price: 0,
+        quantity: 0,
+        category: "",
+        availability: "",
+        discount: 0,
+      });
+      console.log("Продукт успешно добавлен");
+    } catch (error) {
+      console.error("Ошибка при добавлении продукта:", error);
+    }
+  }
+  const fetchAllProducts = async () => {
+    try {
+      const { data } = await axios.get(`${API_URL}/product/get`);
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
+  console.log(data?.products);
   console.log(inpValue);
-  function handleInp(e) {
-    const { name, value } = e.target;
-    setInpValue({ ...inpValue, [name]: value });
-  }
-  function addProduct(){
-    createProduct(inpValue)
-  }
 
   return (
     <>
@@ -31,58 +87,50 @@ const AdminPage = () => {
         </h1>
         <div className="container">
           <div className="admin-inputs">
-            <TextField
-              onChange={handleInp}
-              name="title"
-              sx={{ width: "100% auto" }}
-              placeholder="Title"
+            <CustomInput
+              onHandle={inputChangeHandler("name")}
+              placeholder="Name"
+              // value={inpValue.name}
             />
-            <TextField
-              onChange={handleInp}
-              name="description"
-              sx={{ width: "100% auto" }}
+            <CustomInput
+              onHandle={inputChangeHandler("description")}
               placeholder="Description"
+              // value={inpValue.description}
             />
-            <TextField
-              onChange={handleInp}
-              name="image"
-              sx={{ width: "100% auto" }}
-              placeholder="Image"
+            <CustomInput
+              onHandle={inputChangeHandler("image")}
+              placeholder="image"
+              // value={inpValue.image}
             />
-            <TextField
-              onChange={handleInp}
+            <CustomInput
+              onHandle={inputChangeHandler("price")}
+              placeholder="price"
               type="number"
-              name="price"
-              sx={{ width: "100% auto" }}
-              placeholder="Price"
+              // value={inpValue.price}
             />
-            <TextField
-              onChange={handleInp}
-              type="number"
-              name="quantity"
-              sx={{ width: "100% auto" }}
+            <CustomInput
+              onHandle={inputChangeHandler("quantity")}
               placeholder="Quantity"
+              type="number"
+              // value={inpValue.quantity}
             />
-            <TextField
-              onChange={handleInp}
-              name="category"
-              sx={{ width: "100% auto" }}
+            <CustomInput
+              onHandle={inputChangeHandler("category")}
               placeholder="Category"
+              // value={inpValue.category}
             />
-            <TextField
-              onChange={handleInp}
-              name="availability"
-              sx={{ width: "100% auto" }}
+            <CustomInput
+              onHandle={inputChangeHandler("availability")}
               placeholder="Availability"
             />
-            <TextField
-              onChange={handleInp}
-              type="number"
-              name="discount"
-              sx={{ width: "100% auto" }}
+            <CustomInput
+              onHandle={inputChangeHandler("discount")}
               placeholder="Discount"
+              type="number"
             />
-            <Button onClick={() => addProduct} variant="outlined">Add Product</Button>
+            <Button onClick={addProduct} variant="outlined">
+              Add Product
+            </Button>
           </div>
         </div>
       </div>

@@ -7,21 +7,27 @@ export const useProducts = () => useContext(productContext);
 
 const ProductContext = ({ children }) => {
   const [product, setProduct] = useState([]);
+
   async function createProduct(newProduct) {
     try {
-      await axios.post(`${API_URL}/product/add/`, newProduct);
+      const res = await axios.post(`${API_URL}/product/add`, newProduct);
+      return res.data;
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   }
   async function getProducts() {
-    let res = await axios.get(API_URL);
+    let res = await axios.get(`${API_URL}/product/get/`);
     setProduct(res.data);
+  }
+  async function deleteProduct(id){
+     await axios.delete(`${API_URL}/product/delete/${id}`)
   }
   const values = {
     createProduct,
     getProducts,
-    product,
+    product:product.products,
+    deleteProduct,
   };
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>

@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../pages/Header";
+import { API_URL } from "../../helpers/Api";
 
 const AuthenticationPage = () => {
   const navigate = useNavigate();
@@ -9,6 +10,21 @@ const AuthenticationPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  console.log(email, password);
+
+  // async function createUser(email, password) {
+  //   await axios.post(`${API_URL}/auth/register`, email, password);
+  // }
+  async function login(email, password) {
+    try {
+        const response = await axios.post(`${API_URL}/auth/register`, { email, password });
+        const token = response.data.token;
+        document.cookie = token = token;
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+}
 
   return (
     <>
@@ -38,7 +54,11 @@ const AuthenticationPage = () => {
                     Create Account
                   </p>
                 </div>
-                <Button sx={{ mt: "20px", width: "160px" }} variant="contained">
+                <Button
+                  onClick={login}
+                  sx={{ mt: "20px", width: "160px" }}
+                  variant="contained"
+                >
                   Log in
                 </Button>
               </div>

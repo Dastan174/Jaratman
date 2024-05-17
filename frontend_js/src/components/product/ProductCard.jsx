@@ -1,24 +1,27 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useProducts } from "../../context/ProductContext";
 
-const ProductCard = () => {
+const ProductCard = ({ item }) => {
+  const { deleteProduct } = useProducts();
   const { id } = useParams();
   const navigate = useNavigate();
+
   return (
     <div className="card">
       <img
         onClick={() => navigate(`product/${item.id}`)}
         className="product-image"
-        src=""
+        src={item.image}
       />
       <div className="card-options">
         <div className="title">
-          <p className="product-title"></p>
-          <p className="product-price">$ USD</p>
+          <p className="product-title">{item.name}</p>
+          <p className="product-price">$ {item.price}USD</p>
         </div>
 
-        <div key={index} className="btns">
+        <div className="btns">
           <Button onClick={() => deleteProduct(item.id)} variant="contained">
             delete
           </Button>

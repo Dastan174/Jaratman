@@ -2,12 +2,18 @@ import { Alert, Box, Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
+import { useProducts } from "../../context/ProductContext";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { createUser } = useProducts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  async function register() {
+    return await register(email);
+  }
 
   return (
     <>
@@ -23,7 +29,7 @@ const RegisterPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Email"
-                sx={{ width: "70%", mt: "20px",  }}
+                sx={{ width: "70%", mt: "20px" }}
               />
               <TextField
                 name="password"
@@ -31,7 +37,7 @@ const RegisterPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Password"
-                sx={{ width: "70%", mt: "20px",  }}
+                sx={{ width: "70%", mt: "20px" }}
               />
               <div className="btns">
                 <div className="forgotPassword">
@@ -51,7 +57,11 @@ const RegisterPage = () => {
                   Sign in with Google{" "}
                   <GoogleIcon sx={{ fontSize: "21px", ml: "6px" }} />
                 </Button>
-                <Button sx={{ mt: "20px", width: "160px" }} variant="contained">
+                <Button
+                  onClick={register}
+                  sx={{ mt: "20px", width: "160px" }}
+                  variant="contained"
+                >
                   Log in
                 </Button>
               </div>
