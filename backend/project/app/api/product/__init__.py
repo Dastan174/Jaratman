@@ -3,7 +3,7 @@ from project.app.schemas.product import Product
 from project.models.models import category, product, availability
 from project.models.database import async_session
 from fastapi.responses import JSONResponse
-from fastapi import Cookie
+from fastapi import Cookie, Header
 from transliterate import translit
 from project.validates.validate_token import validate_token
 
@@ -13,9 +13,12 @@ router = APIRouter(prefix="/product")
 session = async_session()
 
 
+
 @router.post("/add/")
-async def product_add(Product: Product, token: str = Cookie(None)):
+async def product_add(Product: Product, token: str = Header()):
+
     validate_token(token)
+
     async with async_session() as session:
         # Проверяем существует ли продукт с таким же именем
         existing_product = await session.execute(product.select().where(product.c.name == Product.name))
@@ -62,7 +65,7 @@ async def product_add(Product: Product, token: str = Cookie(None)):
         return JSONResponse(status_code=200, content={"msg": "Продукт успешно добавлен"})
 
 @router.patch("/edit/{urls}/")
-async def product_edit(urls: str, Product: Product, token: str = Cookie(None)):
+async def product_edit(urls: str, Product: Product, token: str = Header(None), cookie_token: str = Cookie(None)):
     async with async_session() as session:
         validate_token(token)
 
@@ -100,7 +103,7 @@ async def product_edit(urls: str, Product: Product, token: str = Cookie(None)):
 
 
 @router.delete("/delete/{urls}/")
-async def product_delete(urls: str, token: str = Cookie(None)):
+async def product_delete(urls: str, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 

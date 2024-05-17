@@ -16,14 +16,16 @@ const AuthenticationPage = () => {
   // async function createUser(email, password) {
   //   await axios.post(`${API_URL}/auth/register`, email, password);
   // }
-  async function login(email, password) {
+  async function login() {
     try {
-        const response = await axios.post(`${API_URL}/auth/register`, { email, password });
-        const token = response.data.token;
-        document.cookie = token = token;
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const token = response.data.token;
+      document.cookie = `token=${token}; path=/`;
+      navigate("/admin");
     } catch (error) {
-        console.error('Login error:', error);
-    }
+      console.error('Login error:', error);
+    }
+  
 }
 
   return (

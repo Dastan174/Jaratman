@@ -4,7 +4,7 @@ from project.models.models import availability
 from project.models.database import async_session
 from project.auxiliary import redis_token_save
 from fastapi.responses import JSONResponse
-from fastapi import Cookie
+from fastapi import Header
 from project.validates.validate_token import validate_token
 
 router = APIRouter(prefix="/availability")
@@ -12,7 +12,7 @@ session = async_session()
 
 
 @router.post("/add/")
-async def availability_add(ava: Availability, token: str = Cookie(None)):
+async def availability_add(ava: Availability, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 
@@ -28,7 +28,7 @@ async def availability_add(ava: Availability, token: str = Cookie(None)):
         return JSONResponse(status_code=200, content={"msg": "Успешно создана"})
 
 @router.delete("/delete/")
-async def availability_delete(ava: Availability, token: str = Cookie(None)):
+async def availability_delete(ava: Availability, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 

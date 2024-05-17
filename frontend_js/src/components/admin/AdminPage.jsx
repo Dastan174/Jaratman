@@ -4,6 +4,7 @@ import { useProducts } from "../../context/ProductContext";
 import axios from "axios";
 import { API_URL } from "../../helpers/Api";
 
+
 {
   /* <TextField
   onChange={handleInp}
@@ -38,7 +39,9 @@ const AdminPage = () => {
     image: "",
     availability: "",
     discount: 0,
-  });
+  }
+
+);
   const inputChangeHandler = (name) => {
     return (event) => {
       const { value } = event.target;
@@ -58,6 +61,7 @@ const AdminPage = () => {
         category: "",
         availability: "",
         discount: 0,
+
       });
       console.log("Продукт успешно добавлен");
     } catch (error) {

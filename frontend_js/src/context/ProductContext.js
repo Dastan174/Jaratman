@@ -1,16 +1,21 @@
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../helpers/Api";
+import Cookies from "js-cookie";
 
 const productContext = createContext();
 export const useProducts = () => useContext(productContext);
 
 const ProductContext = ({ children }) => {
   const [product, setProduct] = useState([]);
+  const token = Cookies.get("token");
 
   async function createProduct(newProduct) {
     try {
-      const res = await axios.post(`${API_URL}/product/add`, newProduct);
+      const res = await axios.post(`${API_URL}/product/add`, newProduct,{headers: {
+        'token': `${token}`
+      }
+    });
       return res.data;
     } catch (error) {
       console.log(error);

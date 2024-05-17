@@ -3,7 +3,7 @@ from project.app.schemas.category import Category
 from project.models.models import authentication, category, product, availability
 from project.models.database import async_session
 from fastapi.responses import JSONResponse
-from fastapi import Cookie
+from fastapi import Header
 from transliterate import translit
 from project.validates.validate_token import validate_token
 
@@ -12,7 +12,7 @@ session = async_session()
 
 
 @router.post("/add/")
-async def category_add(Cat: Category, token: str = Cookie(None)):
+async def category_add(Cat: Category, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 
@@ -31,7 +31,7 @@ async def category_add(Cat: Category, token: str = Cookie(None)):
 
 
 @router.patch("/edit/{urls}")
-async def category_edit(urls: str, Cat: Category, token: str = Cookie(None)):
+async def category_edit(urls: str, Cat: Category, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 
@@ -49,7 +49,7 @@ async def category_edit(urls: str, Cat: Category, token: str = Cookie(None)):
         return JSONResponse(status_code=200, content={"msg": "Категория успешно изменено"})
 
 @router.delete("/delete/{urls}/")
-async def category_delete(urls: str, token: str = Cookie(None)):
+async def category_delete(urls: str, token: str = Header(None)):
     async with async_session() as session:
         validate_token(token)
 
@@ -90,17 +90,13 @@ async def category_get(urls: str):
         product_list = product_info.fetchall()
 
 
-
-        # Преобразование результата в список словарей для удобства
         product_data = []
         for product_row in product_list:
             availability_id = await session.execute(
                 availability.select().where(availability.c.id == product_row.availability_id))
             availability_data = availability_id.fetchone()
-            # Получаем информацию о категории по ее идентификатору
 
 
-            # Создаем словарь с нужными данными
             product_dict = {
                 "id": product_row.id,
                 "name": product_row.name,
