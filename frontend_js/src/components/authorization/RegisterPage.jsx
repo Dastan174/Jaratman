@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useProducts } from "../../context/ProductContext";
+import axios from "axios";
+import { API_URL } from "../../helpers/Api";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -12,7 +14,14 @@ const RegisterPage = () => {
   const [error, setError] = useState("");
 
   async function register() {
-    return await register(email);
+    try {
+      const response = await axios.post(`${API_URL}/auth/register`, {email, password });
+      const token = response.data.token;
+      document.cookie = `token=${token}; path=/`;
+      navigate("/admin");
+    } catch (error) {
+      console.error('register error', error);
+    }
   }
 
   return (
@@ -74,3 +83,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+ 

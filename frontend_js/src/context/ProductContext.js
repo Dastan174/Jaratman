@@ -7,33 +7,54 @@ const productContext = createContext();
 export const useProducts = () => useContext(productContext);
 
 const ProductContext = ({ children }) => {
-  const [product, setProduct] = useState([]);
+  const [product, setProducts] = useState([]);
   const token = Cookies.get("token");
 
   async function createProduct(newProduct) {
     try {
-      const res = await axios.post(`${API_URL}/product/add`, newProduct,{headers: {
-        'token': `${token}`
-      }
-    });
+      const res = await axios.post(`${API_URL}/product/add/`, newProduct, {
+        headers: {
+          'token': token
+        }
+      });
       return res.data;
     } catch (error) {
-      console.log(error);
+      console.error("Ошибка при создании продукта:", error);
+      throw error; 
     }
   }
+
   async function getProducts() {
-    let res = await axios.get(`${API_URL}/product/get/`);
-    setProduct(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/product/get/`);
+      setProducts(res.data);
+    } catch (error) {
+      console.error("Ошибка при получении списка продуктов:", error);
+      throw error;
+    }
   }
-  async function deleteProduct(id){
-     await axios.delete(`${API_URL}/product/delete/${id}`)
+
+  async function deleteProduct(urls) {
+    try {
+      await axios.delete(`${API_URL}/product/delete/${urls}`, {
+        headers: {
+          'token': token
+        }
+      });
+      await getProducts();
+    } catch (error) {
+      console.error("Ошибка при удалении продукта:", error);
+      throw error;
+    }
   }
+
   const values = {
     createProduct,
     getProducts,
-    product:product.products,
     deleteProduct,
+    product:product.products,
   };
+
   return (
     <productContext.Provider value={values}>{children}</productContext.Provider>
   );

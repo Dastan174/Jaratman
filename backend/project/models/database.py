@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 # База данных
 DATABASE_URL = "sqlite+aiosqlite:///project/database.db"
 engine = create_async_engine(
-    DATABASE_URL, echo=True
+    DATABASE_URL
 )
 
 # Создаем асинхронный sessionmaker

@@ -15,19 +15,19 @@ session = async_session()
 
 
 @router.post("/add/")
-async def product_add(Product: Product, token: str = Header()):
+async def product_add(Product: Product, token: str = Header(None)):
 
-    validate_token(token)
+    if not validate_token(token):
+        raise HTTPException(status_code=401, detail="Недействительный токен")
 
     async with async_session() as session:
-        # Проверяем существует ли продукт с таким же именем
+
         existing_product = await session.execute(product.select().where(product.c.name == Product.name))
         existing_product = existing_product.fetchone()
 
         if existing_product:
             return JSONResponse(status_code=400, content={"msg": "Такой продукт уже существует"})
 
-        # Получаем идентификатор категории по имени
         category_query = await session.execute(category.select().where(category.c.name == Product.category))
         category_row = category_query.fetchone()
 
@@ -115,7 +115,7 @@ async def product_delete(urls: str, token: str = Header(None)):
         if deleted_count == 0:
             raise HTTPException(status_code=404, detail="Продукт не найдена")
 
-        return {"msg": "Продукт успешно удалена"}
+    return JSONResponse(status_code=200, content={"msg": "Продукт успешно удалена"})
 
 
 

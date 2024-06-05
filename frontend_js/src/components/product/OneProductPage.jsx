@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
+
 const OneProductPage = () => {
   const [cartQuantity, setCartQuantity] = useState(1);
   const [modalBlock, setModalBlock] = useState("none");

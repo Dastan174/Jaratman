@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useProducts } from "../../context/ProductContext";
 import axios from "axios";
 import { API_URL } from "../../helpers/Api";
-
+import { useNavigate } from "react-router-dom";
 
 {
   /* <TextField
@@ -28,6 +28,7 @@ const CustomInput = ({ type = "text", placeholder, onHandle, value }) => {
 };
 
 const AdminPage = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const { createProduct } = useProducts();
   const [inpValue, setInpValue] = useState({
@@ -40,6 +41,7 @@ const AdminPage = () => {
     availability: "",
     discount: 0,
   }
+
 
 );
   const inputChangeHandler = (name) => {
@@ -64,9 +66,11 @@ const AdminPage = () => {
 
       });
       console.log("Продукт успешно добавлен");
+      navigate("/")
     } catch (error) {
       console.error("Ошибка при добавлении продукта:", error);
     }
+    navigate("/")
   }
   const fetchAllProducts = async () => {
     try {

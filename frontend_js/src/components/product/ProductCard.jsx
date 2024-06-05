@@ -11,9 +11,10 @@ const ProductCard = ({ item }) => {
   return (
     <div className="card">
       <img
-        onClick={() => navigate(`product/${item.id}`)}
+        onClick={() => navigate(`product/${item.urls}`)}
         className="product-image"
-        src={item.image}
+        src={`data:image/jpeg;base64, ${item.image}`}
+        alt="Product Image"
       />
       <div className="card-options">
         <div className="title">
@@ -22,7 +23,7 @@ const ProductCard = ({ item }) => {
         </div>
 
         <div className="btns">
-          <Button onClick={() => deleteProduct(item.id)} variant="contained">
+          <Button onClick={() => deleteProduct(item.urls)} variant="contained">
             delete
           </Button>
           <Button onClick={() => navigate(`edit/`)}>edit</Button>
