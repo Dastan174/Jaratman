@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c627ab2-689c-435a-9437-838888d5d6fd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/project/app/api/product/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/project/app/api/product/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/project/app/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/project/app/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/project/auxiliary/token_session/redis_token/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/project/auxiliary/token_session/redis_token/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/project/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/backend/project/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/project/validates/validate_token/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/project/validates/validate_token/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend_js/src/components/admin/AdminPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend_js/src/components/admin/AdminPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend_js/src/context/ProductContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend_js/src/context/ProductContext.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,14 +34,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Администратор/Documents/GitHub/Jaratman/backend"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Администратор/Documents/GitHub/Jaratman/backend&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
