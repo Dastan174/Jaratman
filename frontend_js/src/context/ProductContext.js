@@ -12,7 +12,7 @@ const ProductContext = ({ children }) => {
 
   async function createProduct(newProduct) {
     try {
-      const res = await axios.post(${API_URL}/product/add/, newProduct, {
+      const res = await axios.post(`${API_URL}/product/add/`, newProduct, {
         headers: {
           'token': token
         }

@@ -74,7 +74,7 @@ const AdminPage = () => {
   }
   const fetchAllProducts = async () => {
     try {
-      const { data } = await axios.get(${API_URL}/product/get);
+      const { data } = await axios.get(`${API_URL}/product/get`);
       setData(data);
     } catch (error) {
       console.log(error);
