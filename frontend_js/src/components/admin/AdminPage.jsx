@@ -74,7 +74,7 @@ const AdminPage = () => {
   }
   const fetchAllProducts = async () => {
     try {
-      const { data } = await axios.get(`${API_URL}/product/get`);
+      const { data } = await axios.get(${API_URL}/product/get);
       setData(data);
     } catch (error) {
       console.log(error);
@@ -86,43 +86,7 @@ const AdminPage = () => {
   }, []);
   console.log(data?.products);
   console.log(inpValue);
-// =======
-const init = {
-  title: "",
-  description: "",
-  // image: "",
-  price: 0,
-  quantity: 0,
-  category: "",
-  availability: "",
-  discount: 0,
-};
-const AdminPage = () => {
-  const [product, setProduct] = useState(init);
-  const { createProduct } = useProducts();
-  console.log(product);
 
-  function handleInp(e) {
-    if (e.target.name === "price") {
-      let obj = {
-        ...product,
-        [e.target.name]: Number(e.target.value),
-      };
-      setProduct(obj);
-    } else {
-      let obj = {
-        ...product,
-        [e.target.name]: e.target.value,
-      };
-      setProduct(obj);
-    }
-  }
-// >>>>>>> Stashed changes
-
-  function addProduct() {
-    createProduct(product);
-    setProduct(init);
-  }
   return (
     <>
       <div id="admin-inputs">
@@ -131,89 +95,48 @@ const AdminPage = () => {
         </h1>
         <div className="container">
           <div className="admin-inputs">
-{/* <<<<<<< Updated upstream */}
             <CustomInput
               onHandle={inputChangeHandler("name")}
               placeholder="Name"
-              value={inpValue.name}
-            <TextField
-              onChange={handleInp}
-              name="title"
-              sx={{ width: "100% auto" }}
-              placeholder="Title"
-              value={product.title}
-{/* >>>>>>> Stashed changes */}
+              // value={inpValue.name}
             />
             <CustomInput
               onHandle={inputChangeHandler("description")}
               placeholder="Description"
-// <<<<<<< Updated upstream
               // value={inpValue.description}
             />
             <CustomInput
               onHandle={inputChangeHandler("image")}
               placeholder="image"
               // value={inpValue.image}
-// =======
-              value={product.description}
-            />
-            <TextField
-              onChange={handleInp}
-              name="image"
-              sx={{ width: "100% auto" }}
-              placeholder="Image"
-              value={product.image}
-{/* >>>>>>> Stashed changes */}
             />
             <CustomInput
               onHandle={inputChangeHandler("price")}
               placeholder="price"
               type="number"
-// <<<<<<< Updated upstream
               // value={inpValue.price}
-// =======
-              name="price"
-              sx={{ width: "100% auto" }}
-              placeholder="Price"
-              value={product.price}
-{/* >>>>>>> Stashed changes */}
             />
             <CustomInput
               onHandle={inputChangeHandler("quantity")}
               placeholder="Quantity"
-// <<<<<<< Updated upstream
               type="number"
               // value={inpValue.quantity}
-// =======
-              value={product.quantity}
-{/* >>>>>>> Stashed changes */}
             />
             <CustomInput
               onHandle={inputChangeHandler("category")}
               placeholder="Category"
-// <<<<<<< Updated upstream
               // value={inpValue.category}
-// =======
-              value={product.category}
-{/* >>>>>>> Stashed changes */}
             />
             <CustomInput
               onHandle={inputChangeHandler("availability")}
               placeholder="Availability"
-              value={product.availability}
             />
             <CustomInput
               onHandle={inputChangeHandler("discount")}
               placeholder="Discount"
-// <<<<<<< Updated upstream
               type="number"
             />
             <Button onClick={addProduct} variant="outlined">
-{/* ======= */}
-              value={product.discount}
-            />
-            <Button onClick={() => addProduct} variant="outlined">
-{/* >>>>>>> Stashed changes */}
               Add Product
             </Button>
           </div>
@@ -221,6 +144,6 @@ const AdminPage = () => {
       </div>
     </>
   );
-}
+};
 
-export default AdminPage;
+export default AdminPage;
