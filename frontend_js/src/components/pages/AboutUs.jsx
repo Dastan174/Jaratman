@@ -15,7 +15,7 @@ const AboutUs = () => {
               <p>
                 Welcome to SPOTLIGHT, where your shopping experience is elevated
                 to new heights! We are not just an online store; we are a
-                destination for style, quality, and exceptional customer
+                destination for sty le, quality, and exceptional customer
                 service. At SPOTLIGHT, we believe that shopping should be an
                 enjoyable and effortless experience. Our team is passionate
                 about curating a collection of products that not only meet your

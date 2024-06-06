@@ -6,10 +6,15 @@ import Cookies from "js-cookie";
 const productContext = createContext();
 export const useProducts = () => useContext(productContext);
 
+// <<<<<<< Updated upstream
 const ProductContext = ({ children }) => {
   const [product, setProducts] = useState([]);
   const token = Cookies.get("token");
 
+// =======
+const ProductContext = ({ children }) => {  
+  const [product,setProduct] = useState([])
+// >>>>>>> Stashed changes
   async function createProduct(newProduct) {
     try {
       const res = await axios.post(`${API_URL}/product/add/`, newProduct, {
@@ -23,7 +28,11 @@ const ProductContext = ({ children }) => {
       throw error; 
     }
   }
+// <<<<<<< Updated upstream
 
+// =======
+  console.log(product);
+// >>>>>>> Stashed changes
   async function getProducts() {
     try {
       const res = await axios.get(`${API_URL}/product/get/`);
